@@ -1,0 +1,4 @@
+void main(void) {
+  int x;
+  x = "string"; /* Aspas nao existem em C- */
+}

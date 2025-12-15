@@ -1,0 +1,13 @@
+int x;
+int quadrado(int n) {
+  return n * n;
+}
+void main(void) {
+  int i;
+  i = 0;
+  while (i < 10) {
+    x = input();
+    output(quadrado(x));
+    i = i + 1;
+  }
+}

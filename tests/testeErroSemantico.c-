@@ -1,0 +1,8 @@
+void func_void(void) { return; }
+void main(void) {
+    int x;
+    x = 10;
+    z = 20; /* Nao declarada */
+    x = func_void(); /* Atribuicao void */
+    output(x);
+}

@@ -1,0 +1,11 @@
+int x;
+void main(void) {
+    int x;
+    x = 10;
+    if (x > 5) {
+        int x;
+        x = 50;
+        output(x); /* Deve imprimir 50 (local do if) */
+    }
+    output(x); /* Deve imprimir 10 (local da main) */
+}

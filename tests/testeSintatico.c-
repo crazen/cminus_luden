@@ -1,0 +1,4 @@
+void main(void) {
+   int x;
+   if (x > 0) then x = 1; /* 'then' nao existe em C- */
+}

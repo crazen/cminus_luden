@@ -1,0 +1,2 @@
+void f(void) { return; }
+void main(void) { int x; x = f(); }

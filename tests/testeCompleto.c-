@@ -1,0 +1,18 @@
+int vetor[5];
+int fatorial(int n) {
+    if (n > 1) return n * fatorial(n - 1);
+    else return 1;
+}
+void output_print(int temp){
+  output(temp);
+}
+void main(void) {
+    int i, temp;
+    i = 0;
+    while (i < 5) {
+        vetor[i] = i + 1;
+        i = i + 1;
+    }
+    temp = fatorial(vetor[4]);
+    output_print(temp);
+}

@@ -1,0 +1,1 @@
+void main(void) { int x; x = y; } /* y nao declarado */

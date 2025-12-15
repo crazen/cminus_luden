@@ -1,0 +1,17 @@
+int adicao(int x, int y){
+    x = x + y;
+    output(x);
+    output(y);
+    return x;
+}
+void main(void){
+    int x; int i; int y; int u;
+    x = input();
+    y = input();
+    i = 0;
+    while(i <= x){
+        u = adicao(x, y);
+        i = i + 1;
+    }
+    output(u);
+}

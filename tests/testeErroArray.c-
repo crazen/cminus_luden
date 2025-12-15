@@ -1,0 +1,6 @@
+/* Array com indice invalido (semantico ou sintatico dependendo da implementacao) */
+void main(void) {
+   int a[10];
+   a[input()] = 1;
+   output(a); /* Tentar imprimir array inteiro */
+}

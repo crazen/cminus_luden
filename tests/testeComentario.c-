@@ -1,0 +1,7 @@
+/* Comentario de bloco
+   ignorado pelo scanner */
+void main(void) {
+    int x;
+    x = 10; /* Comentario inline */
+    output(x);
+}

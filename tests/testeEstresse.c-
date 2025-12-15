@@ -1,0 +1,154 @@
+/* ========================================================== */
+/* TESTE DE ESTRESSE DE ESCOPO E MEMORIA PARA C-MINUS         */
+/* Objetivo: Quebrar a gestao de pilha e tabela de simbolos   */
+/* ========================================================== */
+
+/* 1. Globais */
+int g;
+int x; 
+int v[5];
+
+/* Funcao auxiliar para imprimir separador (usando numero magico) */
+void print_sep(void) {
+    output(9999); 
+}
+
+/* 2. Teste de Shadowing (Sombreado) de Variaveis */
+/* Parametro 'x' deve esconder global 'x' */
+void teste_shadow(int x) {
+    int y;
+    y = 100;
+    
+    output(x); /* Deve imprimir o parametro (ex: 10) */
+    
+    /* Bloco Nivel 1 */
+    {
+        int x; /* Esconde parametro 'x' */
+        x = 1;
+        output(x); /* Deve imprimir 1 */
+        
+        /* Bloco Nivel 2 */
+        {
+            int x; /* Esconde 'x' do Nivel 1 */
+            int z;
+            x = 2;
+            z = x + y; /* Usa 'x' local (2) e 'y' da funcao (100) */
+            output(x); /* Deve imprimir 2 */
+            output(z); /* Deve imprimir 102 */
+            
+            /* Bloco Nivel 3 */
+            {
+                int x; /* Esconde 'x' do Nivel 2 */
+                x = 3;
+                output(x); /* Deve imprimir 3 */
+                
+                /* Modifica global explicitamente? Nao da no C-Minus padrao 
+                   se o nome esta sombreado. Mas podemos modificar 'g' */
+                g = 500;
+            }
+            output(x); /* Volta para Nivel 2: Deve imprimir 2 */
+        }
+        output(x); /* Volta para Nivel 1: Deve imprimir 1 */
+    }
+    output(x); /* Volta para Parametro: Deve imprimir 10 */
+}
+
+/* 3. Teste de Recursao e Memoria Local */
+/* Garante que 'loc' e 'temp' nao colidem entre chamadas */
+int recursao_profunda(int n) {
+    int loc;
+    int temp;
+    
+    loc = n;
+    
+    if (n < 1) {
+        return 0;
+    } else {
+        /* temp mantem valor enquanto a recursao desce */
+        temp =  n * 10; 
+        return loc + temp + recursao_profunda(n - 1);
+    }
+}
+
+/* 4. Teste de Vetores Locais e Passagem de Referencia */
+/* 'arr' aqui é um ponteiro para o vetor passado */
+void altera_vetor(int arr[], int tamanho) {
+    int i;
+    i = 0;
+    while (i < tamanho) {
+        arr[i] = arr[i] * 2; /* Dobra o valor no vetor original */
+        i = i + 1;
+    }
+}
+
+/* Vetor local 'v' deve esconder vetor global 'v' */
+void teste_vetor_local(void) {
+    int v[3]; 
+    int i;
+    
+    i = 0;
+    /* Preenche local */
+    while (i < 3) {
+        v[i] = i + 10; /* {10, 11, 12} */
+        i = i + 1;
+    }
+    
+    altera_vetor(v, 3); /* Passa vetor local */
+    
+    i = 0;
+    while (i < 3) {
+        output(v[i]); /* Esperado: 20, 22, 24 */
+        i = i + 1;
+    }
+}
+
+void main(void) {
+    int i;
+    
+    /* Inicializa globais */
+    g = 0;
+    x = 1111; /* Global X */
+    
+    print_sep(); /* SAIDA: 9999 */
+    
+    /* PARTE 1: Escopo e Shadowing */
+    /* Passamos 10. A global x=1111 nao deve ser afetada aqui dentro */
+    teste_shadow(10); 
+    /* Saida esperada nesta funcao: 10, 1, 2, 102, 3, 2, 1, 10 */
+    
+    output(x); /* Deve imprimir 1111 (Global intacta) */
+    output(g); /* Deve imprimir 500 (Alterado no nivel 3 do shadow) */
+    
+    print_sep(); /* SAIDA: 9999 */
+    
+    /* PARTE 2: Vetores */
+    /* Preenche vetor global */
+    i = 0;
+    while (i < 5) {
+        v[i] = i;
+        i = i + 1;
+    }
+    
+    teste_vetor_local(); 
+    /* Saida esperada da funcao: 20, 22, 24 */
+    
+    /* Verifica se vetor global foi alterado (Nao deve!) */
+    output(v[0]); /* 0 */
+    output(v[1]); /* 1 */
+    
+    /* Agora altera vetor global */
+    altera_vetor(v, 5);
+    output(v[1]); /* 2 (1*2) */
+    output(v[2]); /* 4 (2*2) */
+    
+    print_sep(); /* SAIDA: 9999 */
+    
+    /* PARTE 3: Recursao */
+    /* n=3 -> 
+       loc=3, temp=30. Ret: 3+30 + rec(2)
+       loc=2, temp=20. Ret: 2+20 + rec(1)
+       loc=1, temp=10. Ret: 1+10 + rec(0) -> 0
+       Total: 33 + 22 + 11 = 66
+    */
+    output(recursao_profunda(3)); 
+}
