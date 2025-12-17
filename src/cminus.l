@@ -3,7 +3,6 @@
 #include "util.h"
 #include "scan.h"
 
-/* CORREÇÃO CRÍTICA: Define YYSTYPE explicitamente antes de incluir parse.h */
 #define YYSTYPE TreeNode *
 #include "parse.h"
 
