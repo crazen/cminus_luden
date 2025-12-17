@@ -2,7 +2,7 @@
 #include "util.h"
 #include "parse.h" 
 
-/* ... (newStmtNode, newExpNode e copyString mantêm-se iguais) ... */
+
 TreeNode * newStmtNode(StmtKind kind) {
     TreeNode * t = (TreeNode *) malloc(sizeof(TreeNode));
     int i;
@@ -53,7 +53,6 @@ void printToken(TokenType token, const char* tokenString) {
     switch (token) {
         case IF: case ELSE: case INT: case RETURN: case VOID:
         case WHILE:
-        /* REMOVIDO: case INPUT e case OUTPUT daqui */
             fprintf(listing,"reserved: %s\n",tokenString); break;
         case ASSIGN: fprintf(listing,"=\n"); break;
         case EQ: fprintf(listing,"==\n"); break;
@@ -81,7 +80,6 @@ void printToken(TokenType token, const char* tokenString) {
     }
 }
 
-/* ... (printTree mantém-se igual) ... */
 static int indentno = 0;
 #define INDENT indentno+=2
 #define UNINDENT indentno-=2
@@ -138,4 +136,5 @@ void printTree(TreeNode *tree, int level, int siblingNum) {
         tree = tree->sibling;
     }
     UNINDENT;
+
 }
