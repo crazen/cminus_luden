@@ -52,8 +52,7 @@ static char* genExp(TreeNode * t) {
                     if (t->child[0] != NULL) {
                         e1 = genExp(t->child[0]); // Indice
                         t_new = newTemp();
-                        // Calcula endereco ou carrega valor
-                        // Simplificação para TAC: t_new = vetor[indice]
+
                         emitTAC("%s = %s[%s]", t_new, t->attr.name, e1);
                         return t_new;
                     }
@@ -85,13 +84,12 @@ static char* genExp(TreeNode * t) {
             break;
             
         case StmtK:
-            // Caso especial: Chamada de função dentro de expressão
+           
             if (t->kind.stmt == CallK) {
-                // Processar argumentos
+                
                 TreeNode *arg = t->child[0];
                 int n_args = 0;
-                // Precisamos empilhar args (em TAC: param x)
-                // Vamos percorrer e armazenar para emitir 'param'
+            
                 char *argsList[20]; 
                 while (arg != NULL) {
                     argsList[n_args++] = genExp(arg);
@@ -115,7 +113,7 @@ static char* genExp(TreeNode * t) {
 static void genStmt(TreeNode * t) {
     if (t == NULL) return;
     
-    char *e1, *e2, *L1, *L2; /* Removido L3 que não era usado */
+    char *e1, *e2, *L1, *L2; 
 
     switch (t->nodekind) {
         case StmtK:
@@ -128,10 +126,10 @@ static void genStmt(TreeNode * t) {
                     emitTAC("if_false %s goto %s", e1, L1);
                     genStmt(t->child[1]); // Then block
                     
-                    if (t->child[2] != NULL) { // Has Else
+                    if (t->child[2] != NULL) { 
                         emitTAC("goto %s", L2);
                         emitTAC("label %s", L1);
-                        genStmt(t->child[2]); // Else block
+                        genStmt(t->child[2]);
                         emitTAC("label %s", L2);
                     } else {
                         emitTAC("label %s", L1);
@@ -139,14 +137,14 @@ static void genStmt(TreeNode * t) {
                     break;
 
                 case WhileK:
-                    L1 = newLabel(); // Start
-                    L2 = newLabel(); // End
+                    L1 = newLabel(); 
+                    L2 = newLabel(); 
                     
                     emitTAC("label %s", L1);
-                    e1 = genExp(t->child[0]); // Condition
+                    e1 = genExp(t->child[0]); 
                     emitTAC("if_false %s goto %s", e1, L2);
                     
-                    genStmt(t->child[1]); // Body
+                    genStmt(t->child[1]); 
                     emitTAC("goto %s", L1);
                     emitTAC("label %s", L2);
                     break;
@@ -190,13 +188,13 @@ static void genStmt(TreeNode * t) {
                     break;
                 
                 case CompoundK:
-                    genStmt(t->child[1]); // Executa lista de statements
+                    genStmt(t->child[1]); 
                     break;
                 
                 case FunDeclK:
                     emitTAC("\nfunc %s:", t->attr.name);
                     emitTAC("begin_func");
-                    genStmt(t->child[2]); // Body
+                    genStmt(t->child[2]); 
                     emitTAC("end_func");
                     break;
 
