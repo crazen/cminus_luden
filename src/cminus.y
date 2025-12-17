@@ -23,7 +23,6 @@ int yylex(void);
 void yyerror(char *message);
 %}
 
-/* ATIVA MENSAGENS DE ERRO DETALHADAS */
 %define parse.error verbose
 
 %token IF ELSE INT RETURN VOID WHILE 
