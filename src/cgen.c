@@ -101,7 +101,7 @@ void cGen(TreeNode *t) {
                     break;
                 case AssignK:
                     if (t->child[0]->child[0] != NULL) {
-                        /* Array Index Assignment */
+                        /* designa o index do array */
                         cGen(t->child[0]->child[0]); 
                         emitRM("ST", AC, tmpOffset--, MP, "save index");
                         cGen(t->child[1]); 
@@ -148,7 +148,7 @@ void cGen(TreeNode *t) {
             switch (t->kind.exp) {
                 case ConstK: emitRM("LDC", AC, t->attr.val, 0, "const"); break;
                 case IdK:
-                    if (t->child[0] != NULL) { /* Array Access */
+                    if (t->child[0] != NULL) { /* acessa o array */
                         cGen(t->child[0]); emitRM("LDC", AC1, 0, 0, "clear"); emitRO("ADD", AC1, AC, AC1, "move index");
                         if (t->scope == 0) {
                             emitRM("LDC", AC, t->memloc, 0, "base global"); emitRO("ADD", AC, AC, GP, "global addr");
@@ -221,3 +221,4 @@ void codeGen(TreeNode *syntaxTree, char *codefile) {
     performBackpatch();
     printf("Código Stack-Machine gerado em %s\n", codefile);
 }
+
