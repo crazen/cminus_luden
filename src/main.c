@@ -4,7 +4,7 @@
 #include "scan.h"
 #include "analyze.h"
 #include "cgen.h"
-#include "codetac.h" /* Incluindo novo header */
+#include "codetac.h" 
 #include <string.h>
 
 TreeNode *parse(void);
