@@ -5,7 +5,7 @@ BISON = bison
 CFLAGS = -Wall -Wextra -std=c11 -Iinclude -Isrc -D_POSIX_C_SOURCE=200809L
 LDFLAGS = -lfl
 
-# Adicionado codetac.o na lista
+
 OBJS = src/main.o src/symtab.o src/analyze.o src/cgen.o src/codetac.o src/util.o src/parse.o src/scan.o
 
 all: cminus
